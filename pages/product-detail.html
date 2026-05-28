@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clooud - Detalhes do Produto</title>
+  <meta name="description" content="Veja as especificações, preços e compre códigos digitais de ativação de seus jogos favoritos.">
+  
+  <!-- FontAwesome para Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos Globais e Componentes -->
+  <link rel="stylesheet" href="../style/variables.css">
+  <link rel="stylesheet" href="../style/layout.css">
+  <link rel="stylesheet" href="../style/components.css">
+  
+  <style>
+    /* Estilos Adicionais para Detalhes do Produto */
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      transition: color var(--transition-fast);
+    }
+    
+    .btn-back:hover {
+      color: var(--color-accent);
+    }
+    
+    .product-detail-layout {
+      display: grid;
+      grid-template-columns: 400px 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-bottom: 50px;
+    }
+    
+    .detail-image-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .detail-image-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      padding-top: 125%;
+      position: relative;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .detail-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .specs-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 24px;
+    }
+    
+    .specs-title {
+      font-family: var(--font-family-title);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    
+    .specs-table {
+      width: 100%;
+      font-size: 0.85rem;
+    }
+    
+    .specs-table td {
+      padding: 8px 0;
+    }
+    
+    .specs-table td:first-child {
+      color: var(--text-muted);
+      font-weight: 500;
+      width: 40%;
+    }
+    
+    .specs-table td:last-child {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    /* Detalhes do Conteúdo (Lado Direito) */
+    .detail-info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    
+    .detail-platform {
+      display: inline-block;
+      align-self: flex-start;
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-accent);
+    }
+    
+    .detail-title {
+      font-family: var(--font-family-title);
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    
+    .detail-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .detail-description {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    
+    /* Preços e Ações de Compra */
+    .detail-purchase-card {
+      background: var(--gradient-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .detail-prices-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .detail-discount-pct {
+      background: var(--gradient-discount);
+      color: var(--text-on-accent);
+      padding: 10px 16px;
+      border-radius: var(--border-radius-sm);
+      font-family: var(--font-family-title);
+      font-weight: 800;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-glow-green);
+    }
+    
+    .detail-price-original {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    
+    .detail-price-current {
+      font-family: var(--font-family-title);
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--color-accent);
+    }
+    
+    .detail-price-current.has-discount {
+      color: var(--color-green);
+    }
+    
+    .purchase-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      overflow: hidden;
+      height: 48px;
+      background-color: var(--bg-primary);
+    }
+    
+    .qty-btn {
+      width: 40px;
+      height: 100%;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    
+    .qty-btn:hover {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    .qty-input {
+      width: 50px;
+      height: 100%;
+      background: none;
+      border: none;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+    
+    /* Guias Extras (Sobre e Ativação) */
+    .detail-tabs {
+      border-top: 1px solid var(--border-color);
+      padding-top: 40px;
+    }
+    
+    .tabs-header {
+      display: flex;
+      gap: 30px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 24px;
+    }
+    
+    .tab-link {
+      font-family: var(--font-family-title);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      padding-bottom: 12px;
+      cursor: pointer;
+      position: relative;
+      transition: color var(--transition-fast);
+    }
+    
+    .tab-link:hover, .tab-link.active {
+      color: var(--text-primary);
+    }
+    
+    .tab-link.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--color-accent);
+      border-radius: 50px;
+    }
+    
+    .tab-content-item {
+      display: none;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+    
+    .tab-content-item.active {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .product-detail-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- SIDEBAR LATERAL -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="home.html" class="logo-link">
+          <div class="logo-icon">C</div>
+          <span class="logo-text">Clooud</span>
+        </a>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-item">
+          <a href="home.html" class="menu-item-link">
+            <i class="fas fa-home"></i> <span>Início</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="catalog.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Catálogo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="offers.html" class="menu-item-link">
+            <i class="fas fa-percentage"></i> <span>Ofertas</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="gift-cards.html" class="menu-item-link">
+            <i class="fas fa-gift"></i> <span>Gift Cards</span>
+          </a>
+        </li>
+        
+        <div class="menu-title">Plataformas</div>
+        
+        <li class="menu-item">
+          <a href="playstation.html" class="menu-item-link">
+            <i class="fab fa-playstation"></i> <span>PlayStation</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="xbox.html" class="menu-item-link">
+            <i class="fab fa-xbox"></i> <span>Xbox</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="nintendo.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Nintendo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="pc.html" class="menu-item-link">
+            <i class="fas fa-desktop"></i> <span>PC Gaming</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="mobile.html" class="menu-item-link">
+            <i class="fas fa-mobile-alt"></i> <span>Mobile</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile-widget">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-wrapper">
+      
+      <!-- CABEÇALHO (HEADER) -->
+      <header class="header">
+        <button class="toggle-sidebar-btn" title="Toggle Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="search-container">
+          <div class="search-wrapper">
+            <i class="fas fa-search" style="color: var(--text-muted);"></i>
+            <input type="text" class="search-input" placeholder="Buscar jogos, gift cards...">
+          </div>
+          <div class="search-results-dropdown">
+            <!-- Sugestões dinâmicas do main.js -->
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </header>
+
+      <!-- ÁREA DE CONTEÚDO DA PÁGINA -->
+      <main class="content-area">
+        
+        <!-- Botão de Voltar -->
+        <a href="catalog.html" class="btn-back">
+          <i class="fas fa-arrow-left"></i> Voltar para o Catálogo
+        </a>
+
+        <!-- Mensagem de erro caso produto não exista -->
+        <div id="product-not-found" style="display: none; text-align: center; padding: 60px 20px;">
+          <i class="fas fa-times-circle" style="font-size: 3rem; color: var(--color-danger); margin-bottom: 20px;"></i>
+          <h3>Produto não encontrado</h3>
+          <p style="color: var(--text-secondary); margin-top: 8px;">O produto que você tentou acessar não existe ou foi removido do sistema.</p>
+        </div>
+
+        <!-- Conteúdo do Detalhe -->
+        <div class="product-detail-layout" id="product-detail-content">
+          
+          <!-- Lado Esquerdo (Imagem + Specs) -->
+          <div class="detail-image-panel">
+            <div class="detail-image-card">
+              <img id="detail-product-img" src="" alt="" class="detail-img">
+            </div>
+            
+            <div class="specs-card">
+              <h3 class="specs-title">Ficha Técnica</h3>
+              <table class="specs-table">
+                <tr>
+                  <td>Plataforma</td>
+                  <td id="spec-platform">-</td>
+                </tr>
+                <tr>
+                  <td>Distribuidora</td>
+                  <td id="spec-publisher">Clooud Digital</td>
+                </tr>
+                <tr>
+                  <td>Idioma</td>
+                  <td id="spec-language">Português (PT-BR)</td>
+                </tr>
+                <tr>
+                  <td>Formato</td>
+                  <td>Código Digital de Ativação</td>
+                </tr>
+                <tr>
+                  <td>Disponibilidade</td>
+                  <td style="color: var(--color-green);"><i class="fas fa-check-circle"></i> Entrega Imediata</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Lado Direito (Info + Comprar) -->
+          <div class="detail-info-panel">
+            <span class="detail-platform" id="detail-platform-tag">-</span>
+            <h1 class="detail-title" id="detail-title">-</h1>
+            
+            <div class="detail-rating">
+              <div style="color: var(--color-warning);">
+                <i class="fas fa-star"></i>
+              </div>
+              <span style="font-weight: 700;" id="detail-rating-num">5.0</span>
+              <span style="color: var(--text-muted);">| Excelente</span>
+            </div>
+
+            <p class="detail-description" id="detail-description">-</p>
+
+            <!-- Card de Compra -->
+            <div class="detail-purchase-card">
+              <div class="detail-prices-wrapper">
+                <div id="detail-discount-wrapper" style="display: none;">
+                  <span class="detail-discount-pct" id="detail-discount-pct">-0%</span>
+                </div>
+                
+                <div style="display: flex; flex-direction: column;">
+                  <span class="detail-price-original" id="detail-price-original">R$ 0,00</span>
+                  <span class="detail-price-current" id="detail-price-current">R$ 0,00</span>
+                </div>
+              </div>
+
+              <!-- Quantidade e Botão -->
+              <div class="purchase-actions">
+                <div class="quantity-selector">
+                  <button class="qty-btn" id="qty-minus" type="button"><i class="fas fa-minus"></i></button>
+                  <input type="text" class="qty-input" id="qty-input" value="1" readonly>
+                  <button class="qty-btn" id="qty-plus" type="button"><i class="fas fa-plus"></i></button>
+                </div>
+
+                <button class="btn btn-primary" id="btn-add-to-cart" style="flex-grow: 1; height: 48px;">
+                  <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
+                </button>
+              </div>
+            </div>
+
+            <!-- Abas Extras -->
+            <div class="detail-tabs">
+              <div class="tabs-header">
+                <div class="tab-link active" data-tab="about">Sobre o Jogo</div>
+                <div class="tab-link" data-tab="activation">Como Ativar</div>
+              </div>
+              
+              <div class="tabs-content">
+                <div class="tab-content-item active" id="tab-about">
+                  <p>Adquira a chave digital e receba o código oficial para ativar a licença em sua conta. Após o resgate, o download é feito diretamente pelos servidores oficiais da plataforma do jogo. Todos os nossos produtos possuem garantia de ativação.</p>
+                </div>
+                <div class="tab-content-item" id="tab-activation">
+                  <ol style="padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                    <li>Acesse a loja oficial da plataforma correspondente (PlayStation Store, Xbox Live, Nintendo eShop, Steam, etc.).</li>
+                    <li>Vá até o seu perfil e selecione a opção <strong>"Resgatar Código"</strong> ou <strong>"Adicionar Fundo de Carteira"</strong>.</li>
+                    <li>Insira a chave de ativação que enviamos e clique em confirmar.</li>
+                    <li>O produto ou saldo será adicionado à sua biblioteca e você poderá iniciar o download.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- RODAPÉ (FOOTER) -->
+      <footer class="main-footer">
+        <div class="footer-content">
+          <div class="footer-info">
+            <span class="footer-logo">Clooud</span>
+            <p class="footer-desc">A melhor distribuidora de jogos digitais e gift cards para consoles, PC e mobile. Os melhores preços acadêmicos do mercado!</p>
+            <div style="display: flex; gap: 16px; font-size: 1.25rem; color: var(--text-secondary); margin-top: 10px;">
+              <a href="#" style="color: var(--color-accent);"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-discord"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Loja</h4>
+            <ul>
+              <li><a href="catalog.html">Todos os Jogos</a></li>
+              <li><a href="offers.html">Promoções</a></li>
+              <li><a href="gift-cards.html">Cartões Presente</a></li>
+              <li><a href="home.html">Mais Vendidos</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Plataformas</h4>
+            <ul>
+              <li><a href="playstation.html">PlayStation Store</a></li>
+              <li><a href="xbox.html">Xbox Live</a></li>
+              <li><a href="nintendo.html">Nintendo Switch eShop</a></li>
+              <li><a href="pc.html">PC Steam & Epic</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Suporte</h4>
+            <ul>
+              <li><a href="#">Fale Conosco</a></li>
+              <li><a href="#">Dúvidas Frequentes</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Políticas de Privacidade</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <span>&copy; 2026 Clooud Games Acadêmico. Todos os direitos reservados. Inspirado na Nuuvem.</span>
+          <span>Desenvolvido para fins didáticos e de apresentação acadêmica.</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/database.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/main.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Obter ID do Produto pela URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get("id");
+
+      if (!productId) {
+        showProductError();
+        return;
+      }
+
+      const product = Database.getProductById(productId);
+      if (!product) {
+        showProductError();
+        return;
+      }
+
+      // 2. Preencher Detalhes do Produto na DOM
+      document.getElementById("detail-product-img").src = product.image;
+      document.getElementById("detail-product-img").alt = product.name;
+      document.getElementById("detail-title").textContent = product.name;
+      document.getElementById("detail-description").textContent = product.description;
+      
+      const categoryLabel = product.category.toUpperCase();
+      document.getElementById("detail-platform-tag").textContent = categoryLabel;
+      document.getElementById("spec-platform").textContent = categoryLabel;
+      document.getElementById("detail-rating-num").textContent = product.rating.toFixed(1);
+
+      // Preço e descontos
+      const hasDiscount = product.discountPrice !== null && product.discountPrice !== undefined;
+      const originalPriceEl = document.getElementById("detail-price-original");
+      const currentPriceEl = document.getElementById("detail-price-current");
+      const discountWrapper = document.getElementById("detail-discount-wrapper");
+      const discountPctEl = document.getElementById("detail-discount-pct");
+
+      if (hasDiscount) {
+        originalPriceEl.textContent = product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        currentPriceEl.textContent = product.discountPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        currentPriceEl.classList.add("has-discount");
+        
+        const pct = Math.round(((product.price - product.discountPrice) / product.price) * 100);
+        discountPctEl.textContent = `-${pct}%`;
+        discountWrapper.style.display = "block";
+      } else {
+        originalPriceEl.style.display = "none";
+        currentPriceEl.textContent = product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+
+      // 3. Controle do Seletor de Quantidade
+      const qtyInput = document.getElementById("qty-input");
+      const btnMinus = document.getElementById("qty-minus");
+      const btnPlus = document.getElementById("qty-plus");
+
+      btnMinus.addEventListener("click", () => {
+        let val = parseInt(qtyInput.value);
+        if (val > 1) {
+          qtyInput.value = val - 1;
+        }
+      });
+
+      btnPlus.addEventListener("click", () => {
+        let val = parseInt(qtyInput.value);
+        qtyInput.value = val + 1;
+      });
+
+      // 4. Lógica de Adição ao Carrinho
+      const btnAddToCart = document.getElementById("btn-add-to-cart");
+      btnAddToCart.addEventListener("click", () => {
+        const qty = parseInt(qtyInput.value);
+        Cart.add(product.id, qty);
+      });
+
+      // 5. Abas (Tabs) do Produto
+      const tabLinks = document.querySelectorAll(".tab-link");
+      const tabItems = document.querySelectorAll(".tab-content-item");
+
+      tabLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          // Remover ativas
+          tabLinks.forEach(l => l.classList.remove("active"));
+          tabItems.forEach(i => i.classList.remove("active"));
+
+          // Adicionar ativa
+          link.classList.add("active");
+          const tabId = link.getAttribute("data-tab");
+          document.getElementById(`tab-${tabId}`).classList.add("active");
+        });
+      });
+
+      function showProductError() {
+        document.getElementById("product-detail-content").style.display = "none";
+        document.getElementById("product-not-found").style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

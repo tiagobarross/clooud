@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clooud - Painel Administrativo</title>
+  <meta name="description" content="Dashboard administrativo da loja Clooud para gerenciar produtos e pedidos.">
+  
+  <!-- FontAwesome para Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos Globais e Componentes -->
+  <link rel="stylesheet" href="../style/variables.css">
+  <link rel="stylesheet" href="../style/layout.css">
+  <link rel="stylesheet" href="../style/components.css">
+  
+  <style>
+    /* Estilos Específicos do Painel Admin */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    
+    .stat-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .stat-card-icon {
+      font-size: 2rem;
+      color: var(--color-accent);
+      background-color: rgba(0, 229, 255, 0.1);
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .stat-card-icon.revenue { color: var(--color-green); background-color: rgba(0, 255, 135, 0.1); }
+    .stat-card-icon.orders { color: var(--color-warning); background-color: rgba(255, 204, 0, 0.1); }
+    .stat-card-icon.users { color: var(--color-purple); background-color: rgba(138, 43, 226, 0.1); }
+    
+    .stat-card-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .stat-card-number {
+      font-family: var(--font-family-title);
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    
+    .stat-card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Abas do Painel Administrativo */
+    .admin-tabs {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1px;
+    }
+    
+    .admin-tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-family-title);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 12px 24px;
+      cursor: pointer;
+      position: relative;
+      transition: color var(--transition-fast);
+    }
+    
+    .admin-tab-btn:hover, .admin-tab-btn.active {
+      color: var(--text-primary);
+    }
+    
+    .admin-tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--color-accent);
+      border-radius: 50px;
+    }
+    
+    .admin-panel-content {
+      display: none;
+    }
+    
+    .admin-panel-content.active {
+      display: block;
+    }
+    
+    .panel-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    
+    .panel-title {
+      font-family: var(--font-family-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Restrição de Acesso View */
+    .access-denied-view {
+      text-align: center;
+      padding: 100px 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- SIDEBAR LATERAL -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="home.html" class="logo-link">
+          <div class="logo-icon">C</div>
+          <span class="logo-text">Clooud</span>
+        </a>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-item">
+          <a href="home.html" class="menu-item-link">
+            <i class="fas fa-home"></i> <span>Início</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="catalog.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Catálogo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="offers.html" class="menu-item-link">
+            <i class="fas fa-percentage"></i> <span>Ofertas</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="gift-cards.html" class="menu-item-link">
+            <i class="fas fa-gift"></i> <span>Gift Cards</span>
+          </a>
+        </li>
+        
+        <div class="menu-title">Plataformas</div>
+        
+        <li class="menu-item">
+          <a href="playstation.html" class="menu-item-link">
+            <i class="fab fa-playstation"></i> <span>PlayStation</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="xbox.html" class="menu-item-link">
+            <i class="fab fa-xbox"></i> <span>Xbox</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="nintendo.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Nintendo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="pc.html" class="menu-item-link">
+            <i class="fas fa-desktop"></i> <span>PC Gaming</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="mobile.html" class="menu-item-link">
+            <i class="fas fa-mobile-alt"></i> <span>Mobile</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile-widget">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-wrapper">
+      
+      <!-- CABEÇALHO (HEADER) -->
+      <header class="header">
+        <button class="toggle-sidebar-btn" title="Toggle Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="search-container">
+          <div class="search-wrapper">
+            <i class="fas fa-search" style="color: var(--text-muted);"></i>
+            <input type="text" class="search-input" placeholder="Buscar jogos, gift cards...">
+          </div>
+          <div class="search-results-dropdown">
+            <!-- Sugestões dinâmicas do main.js -->
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </header>
+
+      <!-- ÁREA DE CONTEÚDO DA PÁGINA (ADMIN SEGURO) -->
+      <main class="content-area" id="admin-main-content" style="display: none;">
+        
+        <div class="section-header">
+          <h2 class="section-title">Painel Administrativo</h2>
+        </div>
+
+        <!-- CARDS DE ESTATÍSTICA -->
+        <section class="admin-stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-icon revenue"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-number" id="stat-revenue">R$ 0,00</span>
+              <span class="stat-card-label">Ganhos Totais</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon"><i class="fas fa-cubes"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-number" id="stat-products">0</span>
+              <span class="stat-card-label">Produtos</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon orders"><i class="fas fa-shopping-bag"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-number" id="stat-orders">0</span>
+              <span class="stat-card-label">Pedidos Ativos</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon users"><i class="fas fa-users"></i></div>
+            <div class="stat-card-info">
+              <span class="stat-card-number" id="stat-users">0</span>
+              <span class="stat-card-label">Clientes</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABAS DO PAINEL -->
+        <div class="admin-tabs">
+          <button class="admin-tab-btn active" data-panel="products-panel">Produtos</button>
+          <button class="admin-tab-btn" data-panel="orders-panel">Pedidos Realizados</button>
+        </div>
+
+        <!-- PAINEL 1: CRUD PRODUTOS -->
+        <section class="admin-panel-content active" id="products-panel">
+          <div class="panel-header-row">
+            <h3 class="panel-title">Gerenciar Produtos</h3>
+            <button class="btn btn-primary" id="btn-add-product">
+              <i class="fas fa-plus"></i> Adicionar Jogo
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>Imagem</th>
+                  <th>Nome do Jogo</th>
+                  <th>Plataforma</th>
+                  <th>Preço</th>
+                  <th>Preço Oferta</th>
+                  <th>Avaliação</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-table-body">
+                <!-- Renderizado por admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- PAINEL 2: GERENCIAMENTO DE PEDIDOS -->
+        <section class="admin-panel-content" id="orders-panel">
+          <div class="panel-header-row">
+            <h3 class="panel-title">Lista de Pedidos</h3>
+          </div>
+          
+          <div class="table-container">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>ID Pedido</th>
+                  <th>Cliente</th>
+                  <th>Data</th>
+                  <th>Itens Comprados</th>
+                  <th>Método</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-table-body">
+                <!-- Renderizado por admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- VIEW DE BLOQUEIO / ACESSO NEGADO -->
+      <div class="access-denied-view" id="admin-access-denied" style="display: block;">
+        <i class="fas fa-lock" style="font-size: 4rem; color: var(--color-danger); margin-bottom: 24px;"></i>
+        <h2 style="font-family: var(--font-family-title); font-weight: 800; margin-bottom: 12px;">Acesso Negado</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 30px;">Esta área é restrita a administradores. Por favor, efetue o login com uma conta administrativa para prosseguir.</p>
+        <button class="btn btn-primary" onclick="window.location.href='login.html'">
+          Fazer Login Admin
+        </button>
+      </div>
+
+      <!-- MODAL DE FORMULÁRIO DE PRODUTO (CREATE / UPDATE) -->
+      <div class="modal-overlay" id="product-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Adicionar Novo Jogo</h3>
+            <button class="modal-close-btn">&times;</button>
+          </div>
+          
+          <form id="product-form">
+            <div class="modal-body">
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="prod-id">ID Único (ex: ps-cyberpunk)</label>
+                  <input type="text" id="prod-id" class="form-control" placeholder="Identificador único" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prod-name">Nome do Produto</label>
+                  <input type="text" id="prod-name" class="form-control" placeholder="Nome do jogo ou gift card" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="prod-description">Descrição Completa</label>
+                <textarea id="prod-description" class="form-control" placeholder="Escreva sobre o jogo, especificações ou itens inclusos..." style="height: 80px; resize: vertical;" required></textarea>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="prod-category">Categoria / Plataforma</label>
+                  <select id="prod-category" class="form-control" required>
+                    <option value="playstation">PlayStation</option>
+                    <option value="xbox">Xbox</option>
+                    <option value="nintendo">Nintendo</option>
+                    <option value="pc">PC Gaming</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="giftcard">Gift Card</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prod-rating">Avaliação Inicial (0 a 5.0)</label>
+                  <input type="number" id="prod-rating" class="form-control" placeholder="5.0" min="0" max="5" step="0.1" required>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="prod-price">Preço Normal (R$)</label>
+                  <input type="number" id="prod-price" class="form-control" placeholder="R$ 299,90" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prod-discount">Preço Promocional (R$ - Opcional)</label>
+                  <input type="number" id="prod-discount" class="form-control" placeholder="R$ 199,90" min="0" step="0.01">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="prod-image">URL da Imagem de Capa</label>
+                <input type="url" id="prod-image" class="form-control" placeholder="https://images.unsplash.com/photo-...">
+              </div>
+
+              <div style="display: flex; gap: 30px; margin-top: 10px;">
+                <label class="form-check">
+                  <input type="checkbox" id="prod-featured"> Jogo em Destaque (Home)
+                </label>
+                <label class="form-check">
+                  <input type="checkbox" id="prod-offer"> Jogo em Oferta (Banner/Desconto)
+                </label>
+              </div>
+
+            </div>
+            
+            <div class="modal-footer">
+              <button class="btn btn-secondary btn-close-modal" type="button">Cancelar</button>
+              <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- RODAPÉ (FOOTER) -->
+      <footer class="main-footer">
+        <div class="footer-content">
+          <div class="footer-info">
+            <span class="footer-logo">Clooud</span>
+            <p class="footer-desc">A melhor distribuidora de jogos digitais e gift cards para consoles, PC e mobile. Os melhores preços acadêmicos do mercado!</p>
+            <div style="display: flex; gap: 16px; font-size: 1.25rem; color: var(--text-secondary); margin-top: 10px;">
+              <a href="#" style="color: var(--color-accent);"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-discord"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Loja</h4>
+            <ul>
+              <li><a href="catalog.html">Todos os Jogos</a></li>
+              <li><a href="offers.html">Promoções</a></li>
+              <li><a href="gift-cards.html">Cartões Presente</a></li>
+              <li><a href="home.html">Mais Vendidos</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Plataformas</h4>
+            <ul>
+              <li><a href="playstation.html">PlayStation Store</a></li>
+              <li><a href="xbox.html">Xbox Live</a></li>
+              <li><a href="nintendo.html">Nintendo Switch eShop</a></li>
+              <li><a href="pc.html">PC Steam & Epic</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Suporte</h4>
+            <ul>
+              <li><a href="#">Fale Conosco</a></li>
+              <li><a href="#">Dúvidas Frequentes</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Políticas de Privacidade</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <span>&copy; 2026 Clooud Games Acadêmico. Todos os direitos reservados. Inspirado na Nuuvem.</span>
+          <span>Desenvolvido para fins didáticos e de apresentação acadêmica.</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/database.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Controle de Segurança de Interface
+      const user = Auth.getCurrentUser();
+      const mainContent = document.getElementById("admin-main-content");
+      const deniedView = document.getElementById("admin-access-denied");
+
+      if (Auth.isAdmin()) {
+        deniedView.style.display = "none";
+        mainContent.style.display = "block";
+      } else {
+        mainContent.style.display = "none";
+        deniedView.style.display = "block";
+      }
+
+      // 2. Alternar entre as Abas (Tabs) do Painel
+      const tabBtns = document.querySelectorAll(".admin-tab-btn");
+      const panels = document.querySelectorAll(".admin-panel-content");
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          // Remover ativas
+          tabBtns.forEach(b => b.classList.remove("active"));
+          panels.forEach(p => p.classList.remove("active"));
+
+          // Adicionar ativas
+          btn.classList.add("active");
+          const targetPanel = btn.getAttribute("data-panel");
+          document.getElementById(targetPanel).classList.add("active");
+        });
+      });
+    });
+  </script>
+</body>
+</html>

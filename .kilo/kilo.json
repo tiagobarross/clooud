@@ -1,0 +1,10 @@
+{
+  "permission": {
+    "read": {
+      "C:/Users/tiago/OneDrive/Área de Trabalho/geral/Estudos DEV/clooud/.kilo/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "C:/Users/tiago/OneDrive/Área de Trabalho/geral/Estudos DEV/clooud/.kilo/get-shit-done/*": "allow"
+    }
+  }
+}

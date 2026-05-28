@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Cores Base do Tema Escuro */
+  --bg-primary: #0b0e14;       /* Fundo principal super escuro */
+  --bg-secondary: #121620;     /* Fundo secundário (sidebar, cards) */
+  --bg-tertiary: #1a202c;      /* Fundo terciário (cabeçalho, inputs) */
+  --bg-card-hover: #222938;    /* Fundo dos cards quando houver hover */
+
+  /* Cores de Acento (Inspiradas na Nuuvem / Visual Gamer) */
+  --color-accent: #00e5ff;      /* Ciano neon */
+  --color-accent-hover: #00a8cc;/* Ciano escurecido para hover */
+  --color-purple: #8a2be2;      /* Roxo gamer para detalhes extras */
+  --color-green: #00ff87;       /* Verde neon para descontos e preços promocionais */
+  --color-danger: #ff3b30;      /* Vermelho para erros e botões de deletar */
+  --color-warning: #ffcc00;     /* Amarelo para alertas */
+  --color-success: #34c759;     /* Verde padrão para sucesso de ações */
+
+  /* Cores de Texto */
+  --text-primary: #f3f4f6;      /* Branco acinzentado de alta legibilidade */
+  --text-secondary: #9ca3af;    /* Cinza médio para descrições */
+  --text-muted: #6b7280;        /* Cinza escuro para detalhes menores */
+  --text-on-accent: #0b0e14;    /* Texto escuro para botões com fundo brilhante */
+
+  /* Bordas e Divisores */
+  --border-color: #232b3b;      /* Borda escura sutil */
+  --border-color-hover: #3b4861;/* Borda com destaque no hover */
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+
+  /* Gradientes */
+  --gradient-accent: linear-gradient(135deg, #00e5ff 0%, #0084ff 100%);
+  --gradient-gamer: linear-gradient(135deg, #8a2be2 0%, #00e5ff 100%);
+  --gradient-discount: linear-gradient(135deg, #00ff87 0%, #60efff 100%);
+  --gradient-card: linear-gradient(180deg, rgba(21, 25, 34, 0.4) 0%, rgba(18, 22, 32, 0.95) 100%);
+
+  /* Sombras e Efeitos */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 15px rgba(0, 229, 255, 0.3);
+  --shadow-glow-green: 0 0 15px rgba(0, 255, 135, 0.3);
+
+  /* Fontes */
+  --font-family-body: 'Inter', sans-serif;
+  --font-family-title: 'Outfit', sans-serif;
+
+  /* Transições */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Dimensões Globais */
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 70px;
+}
+
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color var(--transition-fast);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Scrollbar Personalizada Estilo Gamer */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}

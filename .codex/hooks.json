@@ -1,0 +1,12 @@
+{
+  "SessionStart": [
+    {
+      "hooks": [
+        {
+          "type": "command",
+          "command": "\"C:/Users/tiago/OneDrive/Área de Trabalho/geral/Estudos DEV/clooud/.codex/hooks/gsd-check-update.cmd\""
+        }
+      ]
+    }
+  ]
+}

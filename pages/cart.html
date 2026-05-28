@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clooud - Carrinho de Compras</title>
+  <meta name="description" content="Revise seus itens no carrinho de compras e finalize o pagamento com facilidade e segurança.">
+  
+  <!-- FontAwesome para Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos Globais e Componentes -->
+  <link rel="stylesheet" href="../style/variables.css">
+  <link rel="stylesheet" href="../style/layout.css">
+  <link rel="stylesheet" href="../style/components.css">
+  
+  <style>
+    /* Estilos Específicos para a Página do Carrinho */
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 30px;
+      align-items: start;
+    }
+    
+    .cart-summary-card {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .summary-title {
+      font-family: var(--font-family-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    
+    .summary-row.total {
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+      font-family: var(--font-family-title);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--color-accent);
+      margin-bottom: 24px;
+    }
+    
+    .summary-row.total.has-discount {
+      color: var(--color-green);
+    }
+    
+    /* Layout do Sucesso do Pedido */
+    .checkout-success-panel {
+      text-align: center;
+      background: var(--gradient-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: 60px 40px;
+      max-width: 650px;
+      margin: 40px auto;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background-color: rgba(52, 199, 89, 0.1);
+      border: 2px solid var(--color-success);
+      color: var(--color-success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin: 0 auto 24px;
+      box-shadow: 0 0 20px rgba(52, 199, 89, 0.2);
+    }
+    
+    .success-title {
+      font-family: var(--font-family-title);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    
+    .order-info-box {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: 20px;
+      margin: 24px 0;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    
+    .order-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .order-info-row:last-child {
+      border-bottom: none;
+    }
+    
+    @media (max-width: 900px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- SIDEBAR LATERAL -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <a href="home.html" class="logo-link">
+          <div class="logo-icon">C</div>
+          <span class="logo-text">Clooud</span>
+        </a>
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="menu-item">
+          <a href="home.html" class="menu-item-link">
+            <i class="fas fa-home"></i> <span>Início</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="catalog.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Catálogo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="offers.html" class="menu-item-link">
+            <i class="fas fa-percentage"></i> <span>Ofertas</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="gift-cards.html" class="menu-item-link">
+            <i class="fas fa-gift"></i> <span>Gift Cards</span>
+          </a>
+        </li>
+        
+        <div class="menu-title">Plataformas</div>
+        
+        <li class="menu-item">
+          <a href="playstation.html" class="menu-item-link">
+            <i class="fab fa-playstation"></i> <span>PlayStation</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="xbox.html" class="menu-item-link">
+            <i class="fab fa-xbox"></i> <span>Xbox</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="nintendo.html" class="menu-item-link">
+            <i class="fas fa-gamepad"></i> <span>Nintendo</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="pc.html" class="menu-item-link">
+            <i class="fas fa-desktop"></i> <span>PC Gaming</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="mobile.html" class="menu-item-link">
+            <i class="fas fa-mobile-alt"></i> <span>Mobile</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <div class="user-profile-widget">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-wrapper">
+      
+      <!-- CABEÇALHO (HEADER) -->
+      <header class="header">
+        <button class="toggle-sidebar-btn" title="Toggle Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="search-container">
+          <div class="search-wrapper">
+            <i class="fas fa-search" style="color: var(--text-muted);"></i>
+            <input type="text" class="search-input" placeholder="Buscar jogos, gift cards...">
+          </div>
+          <div class="search-results-dropdown">
+            <!-- Sugestões dinâmicas do main.js -->
+          </div>
+        </div>
+        
+        <div class="header-actions">
+          <!-- Renderizado dinamicamente pelo main.js -->
+        </div>
+      </header>
+
+      <!-- ÁREA DE CONTEÚDO DA PÁGINA -->
+      <main class="content-area">
+        
+        <div class="section-header">
+          <h2 class="section-title">Carrinho de Compras</h2>
+        </div>
+
+        <!-- TELA DE SUCESSO DE CHECKOUT (ESCONDIDA POR PADRÃO) -->
+        <div id="checkout-success-view" style="display: none;">
+          <div class="checkout-success-panel">
+            <div class="success-icon">
+              <i class="fas fa-check"></i>
+            </div>
+            <h2 class="success-title">Pedido Realizado!</h2>
+            <p style="color: var(--text-secondary);">Obrigado por comprar na Clooud! Seu código de ativação já está disponível para resgate imediato.</p>
+            
+            <div class="order-info-box">
+              <div class="order-info-row">
+                <span style="color: var(--text-muted);">Número do Pedido</span>
+                <span style="font-weight: 700; color: var(--text-primary);" id="success-order-id">-</span>
+              </div>
+              <div class="order-info-row">
+                <span style="color: var(--text-muted);">Forma de Pagamento</span>
+                <span style="font-weight: 600;" id="success-order-payment">-</span>
+              </div>
+              <div class="order-info-row">
+                <span style="color: var(--text-muted);">Valor Total</span>
+                <span style="font-weight: 700; color: var(--color-green);" id="success-order-total">R$ 0,00</span>
+              </div>
+              <div class="order-info-row">
+                <span style="color: var(--text-muted);">Status do Pedido</span>
+                <span class="badge status-completed" style="font-size:0.75rem;">Disponível</span>
+              </div>
+            </div>
+
+            <div style="padding: 16px; background-color: rgba(0, 229, 255, 0.05); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: var(--border-radius-md); text-align: left; font-size: 0.85rem; margin-bottom: 30px;">
+              <div style="font-weight: 700; color: var(--color-accent); margin-bottom: 6px;"><i class="fas fa-key"></i> Seu Código de Ativação:</div>
+              <code style="font-family: monospace; font-size: 1.1rem; font-weight: 700; color: var(--text-primary); letter-spacing: 1px; display: block; text-align: center; padding: 8px; background: var(--bg-primary); border-radius: var(--border-radius-sm); border: 1px solid var(--border-color);">
+                CLOOUD-GAME-KEY-X97B4-W28K1
+              </code>
+            </div>
+
+            <button class="btn btn-primary" onclick="window.location.href='home.html'" style="padding: 14px 40px;">
+              Voltar ao Início
+            </button>
+          </div>
+        </div>
+
+        <!-- CONTAINER DO CARRINHO COMPRAS -->
+        <div id="cart-main-view">
+          
+          <!-- CARRINHO VAZIO PLACEHOLDER -->
+          <div id="cart-empty-placeholder" style="display: none; text-align: center; padding: 60px 20px;">
+            <i class="fas fa-shopping-basket" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 24px;"></i>
+            <h3>Seu carrinho está vazio</h3>
+            <p style="color: var(--text-secondary); margin-top: 8px; margin-bottom: 30px;">Explore nosso catálogo e encontre os melhores jogos e gift cards.</p>
+            <button class="btn btn-primary" onclick="window.location.href='catalog.html'" style="padding: 12px 30px;">
+              Ir para o Catálogo
+            </button>
+          </div>
+
+          <!-- LAYOUT COM ITENS -->
+          <div class="cart-layout" id="cart-content-layout" style="display: none;">
+            
+            <!-- LISTA DE ITENS -->
+            <div class="table-container" style="margin-bottom: 0;">
+              <table class="custom-table">
+                <thead>
+                  <tr>
+                    <th>Imagem</th>
+                    <th>Jogo / Produto</th>
+                    <th>Plataforma</th>
+                    <th style="text-align: center;">Quantidade</th>
+                    <th>Preço Un.</th>
+                    <th>Total</th>
+                    <th style="text-align: center;">Remover</th>
+                  </tr>
+                </thead>
+                <tbody id="cart-table-body">
+                  <!-- Injetado dinamicamente -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- RESUMO DA COMPRA -->
+            <div class="cart-summary-card">
+              <h3 class="summary-title">Resumo do Pedido</h3>
+              
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="summary-subtotal">R$ 0,00</span>
+              </div>
+              
+              <div class="summary-row" style="color: var(--color-green);">
+                <span>Desconto</span>
+                <span id="summary-discount">- R$ 0,00</span>
+              </div>
+
+              <div class="summary-row">
+                <span>Entrega</span>
+                <span style="color: var(--color-green); font-weight: 600;">Grátis (Digital)</span>
+              </div>
+
+              <!-- Escolha de Pagamento -->
+              <div style="margin: 24px 0 20px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                <label class="form-label" style="margin-bottom: 10px;">Método de Pagamento</label>
+                <select id="checkout-payment" class="form-control" style="background-color: var(--bg-primary); border-color: var(--border-color); width: 100%;">
+                  <option value="Pix">Pix (Aprovação Imediata)</option>
+                  <option value="Cartão de Crédito">Cartão de Crédito</option>
+                  <option value="Boleto Bancário">Boleto Bancário</option>
+                </select>
+              </div>
+
+              <div class="summary-row total" id="summary-total-row">
+                <span>Total</span>
+                <span id="summary-total">R$ 0,00</span>
+              </div>
+
+              <button class="btn btn-primary" id="btn-checkout" style="width: 100%; height: 50px; font-size: 1rem; gap: 10px;">
+                <i class="fas fa-lock"></i> Finalizar Compra
+              </button>
+              
+              <div style="text-align: center; margin-top: 16px; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <i class="fas fa-shield-alt"></i> Seus dados estão 100% protegidos
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- RODAPÉ (FOOTER) -->
+      <footer class="main-footer">
+        <div class="footer-content">
+          <div class="footer-info">
+            <span class="footer-logo">Clooud</span>
+            <p class="footer-desc">A melhor distribuidora de jogos digitais e gift cards para consoles, PC e mobile. Os melhores preços acadêmicos do mercado!</p>
+            <div style="display: flex; gap: 16px; font-size: 1.25rem; color: var(--text-secondary); margin-top: 10px;">
+              <a href="#" style="color: var(--color-accent);"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-discord"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Loja</h4>
+            <ul>
+              <li><a href="catalog.html">Todos os Jogos</a></li>
+              <li><a href="offers.html">Promoções</a></li>
+              <li><a href="gift-cards.html">Cartões Presente</a></li>
+              <li><a href="home.html">Mais Vendidos</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Plataformas</h4>
+            <ul>
+              <li><a href="playstation.html">PlayStation Store</a></li>
+              <li><a href="xbox.html">Xbox Live</a></li>
+              <li><a href="nintendo.html">Nintendo Switch eShop</a></li>
+              <li><a href="pc.html">PC Steam & Epic</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-links-col">
+            <h4>Suporte</h4>
+            <ul>
+              <li><a href="#">Fale Conosco</a></li>
+              <li><a href="#">Dúvidas Frequentes</a></li>
+              <li><a href="#">Termos de Uso</a></li>
+              <li><a href="#">Políticas de Privacidade</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <span>&copy; 2026 Clooud Games Acadêmico. Todos os direitos reservados. Inspirado na Nuuvem.</span>
+          <span>Desenvolvido para fins didáticos e de apresentação acadêmica.</span>
+        </div>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../js/database.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/cart.js"></script>
+  <script src="../js/main.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const tableBody = document.getElementById("cart-table-body");
+      const emptyPlaceholder = document.getElementById("cart-empty-placeholder");
+      const contentLayout = document.getElementById("cart-content-layout");
+      
+      const summarySubtotal = document.getElementById("summary-subtotal");
+      const summaryDiscount = document.getElementById("summary-discount");
+      const summaryTotal = document.getElementById("summary-total");
+      const totalRow = document.getElementById("summary-total-row");
+
+      // 1. Atualizar e Renderizar Tabela do Carrinho
+      const renderCartView = () => {
+        const details = Cart.getDetails();
+
+        if (details.items.length === 0) {
+          contentLayout.style.display = "none";
+          emptyPlaceholder.style.display = "block";
+          return;
+        }
+
+        emptyPlaceholder.style.display = "none";
+        contentLayout.style.display = "grid";
+
+        tableBody.innerHTML = details.items.map(item => {
+          const formattedPriceUnit = item.priceUnit.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+          const formattedTotalItem = item.totalItem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+          return `
+            <tr data-id="${item.id}">
+              <td><img src="${item.image}" alt="${item.name}" class="table-img"></td>
+              <td style="font-weight: 600; color: var(--text-primary); max-width: 250px;">${item.name}</td>
+              <td><span class="badge badge-${item.category}">${item.category}</span></td>
+              <td style="text-align: center;">
+                <div class="quantity-selector" style="margin: 0 auto; height: 38px;">
+                  <button class="qty-btn update-qty-btn" data-id="${item.id}" data-action="minus" type="button" style="width: 30px;"><i class="fas fa-minus" style="font-size:0.75rem;"></i></button>
+                  <input type="text" class="qty-input" value="${item.quantity}" readonly style="width: 35px; font-size:0.9rem;">
+                  <button class="qty-btn update-qty-btn" data-id="${item.id}" data-action="plus" type="button" style="width: 30px;"><i class="fas fa-plus" style="font-size:0.75rem;"></i></button>
+                </div>
+              </td>
+              <td>${formattedPriceUnit}</td>
+              <td style="font-weight: 700; color: var(--text-primary);">${formattedTotalItem}</td>
+              <td style="text-align: center;">
+                <button class="btn btn-secondary btn-icon remove-cart-item-btn" data-id="${item.id}" style="width: 34px; height: 34px; border-radius: var(--border-radius-sm); border-color: transparent;">
+                  <i class="fas fa-trash-alt" style="font-size: 0.9rem; color: var(--color-danger);"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        // Injetar Valores Resumo
+        summarySubtotal.textContent = details.subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        summaryDiscount.textContent = `- ` + details.discount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        summaryTotal.textContent = details.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        if (details.discount > 0) {
+          totalRow.classList.add("has-discount");
+        } else {
+          totalRow.classList.remove("has-discount");
+        }
+
+        // Registrar Eventos dos Itens Renderizados
+        tableBody.querySelectorAll(".remove-cart-item-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            Cart.remove(id);
+            renderCartView();
+          });
+        });
+
+        tableBody.querySelectorAll(".update-qty-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            const action = btn.getAttribute("data-action");
+            const currentItem = details.items.find(it => it.id === id);
+            
+            if (currentItem) {
+              const newQty = action === "plus" ? currentItem.quantity + 1 : currentItem.quantity - 1;
+              Cart.updateQuantity(id, newQty);
+              renderCartView();
+            }
+          });
+        });
+      };
+
+      // 2. Finalizar Compra (Checkout)
+      const btnCheckout = document.getElementById("btn-checkout");
+      if (btnCheckout) {
+        btnCheckout.addEventListener("click", () => {
+          const user = Auth.getCurrentUser();
+          
+          if (!user) {
+            alert("Você precisa estar logado para finalizar seu pedido. Redirecionando para login...");
+            window.location.href = "login.html";
+            return;
+          }
+
+          const paymentMethod = document.getElementById("checkout-payment").value;
+          const checkoutResult = Cart.checkout(paymentMethod);
+
+          if (checkoutResult.success) {
+            // Sucesso! Mostrar layout de confirmação
+            document.getElementById("cart-main-view").style.display = "none";
+            
+            document.getElementById("success-order-id").textContent = checkoutResult.order.id;
+            document.getElementById("success-order-payment").textContent = checkoutResult.order.paymentMethod;
+            document.getElementById("success-order-total").textContent = checkoutResult.order.total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            
+            document.getElementById("checkout-success-view").style.display = "block";
+            
+            // Sincronizar badge
+            Cart.updateBadge();
+          } else {
+            alert("Erro ao processar pedido: " + checkoutResult.message);
+          }
+        });
+      }
+
+      // Inicializar renderização
+      renderCartView();
+    });
+  </script>
+</body>
+</html>
